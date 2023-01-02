@@ -1,0 +1,15 @@
+source_host=xxx
+source_port=6379
+source_db=10
+source_auth=xxx
+
+target_host=yyyyy
+target_port=6379
+target_db=12
+target_auth=yyyyy
+
+
+redis-cli -a $source_auth -h $source_host -p $source_port -n $source_db keys \* | while read key; do
+    echo "redis-cli -h $source_host -p $source_port -a $source_auth -n $source_db MIGRATE $target_host $target_port "" $target_db 5000 COPY AUTH $target_auth KEYS $key"
+    redis-cli -h $source_host -p $source_port -a $source_auth -n $source_db MIGRATE $target_host $target_port "" $target_db 5000 COPY AUTH $target_auth KEYS $key 
+done
